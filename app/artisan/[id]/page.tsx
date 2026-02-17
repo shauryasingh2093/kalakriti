@@ -1,77 +1,160 @@
 "use client";
 
+import { use } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Award, MapPin } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, ShoppingBag, Share2, Instagram, Facebook, Mail, Award } from "lucide-react";
 
-export default function ArtisanProfile({ params }: { params: { id: string } }) {
+export default function ArtisanProfile({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
+
+    // Mock data for the artisan
+    const artisan = {
+        id: id,
+        name: "Ram Narayan",
+        craft: "Master Blue Pottery Artist",
+        region: "Jaipur, Rajasthan",
+        img: "/artisan-featured.png",
+        bio: "Ram Narayan has been practicing the art of Blue Pottery for over 40 years. He is a state award winner and has trained hundreds of young artisans in his workshop in Jaipur. His work is known for its intricate floral patterns and the perfect shade of indigo.",
+        journey: "The art of Blue Pottery came to Rajasthan in the 17th century. Ram's family has been involved in this craft since the era of Sawai Jai Singh II. He started helping his father at the age of 10 and eventually mastered the delicate balance of minerals required to create the signature glaze.",
+        products: [
+            { id: 1, name: "Indigo Glazed Vase", price: "₹2,499", img: "/trending-craft.png" },
+            { id: 2, name: "Floral Serving Bowl", price: "₹1,800", img: "/hero.png" },
+            { id: 3, name: "Decorative Tile Set", price: "₹3,500", img: "/artisan-featured.png" },
+        ],
+        experience: "42 Years",
+        awards: ["Rajasthan State Award 2012", "Heritage Excellence 2018"],
+        following: "1.2k",
+        posts: 48
+    };
+
     return (
-        <main style={{ minHeight: '100vh' }}>
+        <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-off-white)' }}>
             <Navbar />
 
-            {/* Profile Header */}
-            <section style={{ height: '70vh', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Image
-                    src="/hero.png"
-                    alt="Artisan Background"
-                    fill
-                    style={{ objectFit: 'cover', filter: 'brightness(0.5)' }}
-                />
-                <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', color: 'var(--color-white)' }}>
+            {/* Immersive Profile Header */}
+            <section style={{ padding: '180px 0 100px', backgroundColor: 'var(--color-sand)', position: 'relative', overflow: 'hidden' }}>
+                <div className="container">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        style={{ width: '200px', height: '200px', borderRadius: '50%', border: '4px solid var(--color-white)', overflow: 'hidden', margin: '0 auto 32px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        <Image src="/artisan-featured.png" alt="Portrait" width={200} height={200} style={{ objectFit: 'cover' }} />
+                        <Link href="/" className="btn-text" style={{ marginBottom: '60px' }}>
+                            <ArrowLeft size={16} /> Heritage Home
+                        </Link>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 450px) 1fr', gap: '80px', alignItems: 'center' }}>
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                                style={{ position: 'relative', aspectRatio: '1/1.3', borderRadius: '150px', overflow: 'hidden', boxShadow: '0 50px 100px rgba(0,0,0,0.1)' }}
+                            >
+                                <Image src={artisan.img} alt={artisan.name} fill style={{ objectFit: 'cover' }} />
+                            </motion.div>
+
+                            <div>
+                                <motion.span
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 0.6 }}
+                                    transition={{ delay: 0.5 }}
+                                    className="tagline-accent"
+                                >
+                                    Master Artisan • {artisan.region}
+                                </motion.span>
+                                <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', margin: '20px 0', lineHeight: 0.9 }}>{artisan.name}</h1>
+                                <p style={{ fontSize: '1.4rem', fontStyle: 'italic', color: 'var(--color-terracotta)', fontWeight: 400, opacity: 0.8 }}>Specializing in {artisan.craft}</p>
+
+                                <div style={{ display: 'flex', gap: '20px', marginTop: '50px' }}>
+                                    <button className="btn-primary" style={{ padding: '16px 40px' }}>Follow Journey</button>
+                                    <button style={{ background: 'white', border: '1px solid rgba(0,0,0,0.1)', padding: '16px', borderRadius: '50%', cursor: 'pointer' }}><Share2 size={20} /></button>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '60px', marginTop: '60px', paddingTop: '40px', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+                                    {[
+                                        { label: "Followers", value: artisan.following },
+                                        { label: "Stories", value: artisan.posts },
+                                        { label: "Experience", value: artisan.experience }
+                                    ].map((stat, i) => (
+                                        <div key={i}>
+                                            <p style={{ fontWeight: 700, fontSize: '1.5rem' }}>{stat.value}</p>
+                                            <p style={{ opacity: 0.5, fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{stat.label}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </motion.div>
-                    <h1 style={{ fontSize: '4.5rem', marginBottom: '16px', color: 'var(--color-white)' }}>Master Rahamatullah</h1>
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', opacity: 0.8 }}>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPin size={18} /> Channapatna</span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Award size={18} /> National Awardee</span>
+                </div>
+            </section>
+
+            {/* Bio & Journey */}
+            <section className="section-spacer">
+                <div className="container">
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '60px' }}>
+                        <div>
+                            <h2 style={{ fontSize: '2.5rem', marginBottom: '30px' }}>The Artisan's Journey</h2>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 2, opacity: 0.8, marginBottom: '30px' }}>{artisan.bio}</p>
+                            <p style={{ fontSize: '1.1rem', lineHeight: 2, opacity: 0.8 }}>{artisan.journey}</p>
+                        </div>
+
+                        <div>
+                            <div style={{ padding: '40px', backgroundColor: 'var(--color-white)', borderRadius: '30px', boxShadow: 'var(--shadow-subtle)' }}>
+                                <h4 style={{ marginBottom: '20px', borderBottom: '1px solid var(--color-sand)', paddingBottom: '10px' }}>Certifications & Awards</h4>
+                                <ul style={{ listStyle: 'none', padding: 0 }}>
+                                    {artisan.awards.map((award, i) => (
+                                        <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+                                            <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: 'var(--color-olive)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                                                <Award size={16} />
+                                            </div>
+                                            <span style={{ fontSize: '0.95rem', fontWeight: 500 }}>{award}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                <h4 style={{ margin: '40px 0 20px', borderBottom: '1px solid var(--color-sand)', paddingBottom: '10px' }}>Connect</h4>
+                                <div style={{ display: 'flex', gap: '20px' }}>
+                                    <Instagram size={24} style={{ cursor: 'pointer', opacity: 0.7 }} />
+                                    <Facebook size={24} style={{ cursor: 'pointer', opacity: 0.7 }} />
+                                    <Mail size={24} style={{ cursor: 'pointer', opacity: 0.7 }} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Story & Projects */}
-            <section className="section-spacer">
-                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px' }}>
-
-                    <div style={{ flex: 1 }}>
-                        <div style={{ background: 'var(--color-sand)', padding: '50px', borderRadius: '30px' }}>
-                            <h3 style={{ fontSize: '2rem', marginBottom: '24px' }}>The Craft</h3>
-                            <p style={{ fontSize: '1.2rem', opacity: 0.7, lineHeight: 1.6, marginBottom: '32px' }}>
-                                Lacquered woodcraft is a 400-year-old tradition. Master Rahamatullah uses vegetable dyes and ancient lathing techniques.
-                            </p>
-                            <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '32px' }}>
-                                <p style={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem', color: 'var(--color-terracotta)' }}>Primary Medium</p>
-                                <p style={{ fontSize: '1.4rem', marginTop: '8px' }}>Teak & Sandalwood</p>
-                            </div>
-                        </div>
+            {/* Featured Products */}
+            <section className="section-spacer" style={{ backgroundColor: 'var(--color-white)' }}>
+                <div className="container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px', flexWrap: 'wrap', gap: '20px' }}>
+                        <h2 style={{ fontSize: '2.5rem' }}>Listed Creations</h2>
+                        <Link href="/marketplace" className="btn-text">View All</Link>
                     </div>
 
-                    <div style={{ flex: 2 }}>
-                        <h2 style={{ fontSize: '3rem', marginBottom: '32px' }}>His Story</h2>
-                        <p style={{ fontSize: '1.3rem', lineHeight: 1.8, color: 'var(--color-charcoal)', opacity: 0.8, marginBottom: '24px' }}>
-                            "Every piece of wood has a soul. My job is simply to uncover it." Starting at age seven, Rahamatullah followed in his father's footsteps, perfecting the art of the Channapatna doll.
-                        </p>
-                        <p style={{ fontSize: '1.2rem', lineHeight: 1.8, color: 'var(--color-charcoal)', opacity: 0.7 }}>
-                            Today, his workshop is a sanctuary for the traditional lacquering process, ensuring that the vibrant colors of our heritage never fade.
-                        </p>
-
-                        <h2 style={{ fontSize: '3rem', margin: '80px 0 32px' }}>Masterpieces</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                            <div style={{ position: 'relative', height: '300px', borderRadius: '20px', overflow: 'hidden' }}>
-                                <Image src="/trending-craft.png" alt="Work" fill style={{ objectFit: 'cover' }} />
-                            </div>
-                            <div style={{ position: 'relative', height: '300px', borderRadius: '20px', overflow: 'hidden' }}>
-                                <Image src="/hero.png" alt="Work" fill style={{ objectFit: 'cover' }} />
-                            </div>
-                        </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '80px 40px' }}>
+                        {artisan.products.map((product) => (
+                            <motion.div
+                                key={product.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                style={{ aspectRatio: '1/1.6' }}
+                            >
+                                <div style={{ position: 'relative', height: '80%', width: '100%', borderRadius: '40px', overflow: 'hidden', backgroundColor: '#fcfcfc' }}>
+                                    <Image src={product.img} alt={product.name} fill style={{ objectFit: 'cover' }} />
+                                </div>
+                                <div style={{ padding: '24px 0', textAlign: 'center' }}>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', opacity: 0.6 }}>Original Piece</span>
+                                    <h4 style={{ fontSize: '1.2rem', marginTop: '8px', fontWeight: 400 }}>{product.name}</h4>
+                                    <p style={{ fontWeight: 700, color: 'var(--color-terracotta)', marginTop: '8px', fontSize: '0.95rem' }}>{product.price}</p>
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
-
                 </div>
             </section>
 

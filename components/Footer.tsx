@@ -17,7 +17,7 @@ const Footer = () => {
                     <div>
                         <h4 style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', marginBottom: '32px', color: 'var(--color-terracotta)' }}>Platform</h4>
                         <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <li><Link href="/discover" style={{ textDecoration: 'none', color: 'inherit', opacity: 0.7 }}>Discover Crafts</Link></li>
+                            <li><Link href="/marketplace" style={{ textDecoration: 'none', color: 'inherit', opacity: 0.7 }}>Browse Marketplace</Link></li>
                             <li><Link href="/community" style={{ textDecoration: 'none', color: 'inherit', opacity: 0.7 }}>Community Feed</Link></li>
                             <li><Link href="/workshops" style={{ textDecoration: 'none', color: 'inherit', opacity: 0.7 }}>Workshops</Link></li>
                             <li><Link href="/support" style={{ textDecoration: 'none', color: 'inherit', opacity: 0.7 }}>Support Artisans</Link></li>
@@ -39,7 +39,7 @@ const Footer = () => {
                 </div>
 
                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '40px', textAlign: 'center', opacity: 0.4, fontSize: '0.8rem' }}>
-                    © 2025 Kalakriti. All rights reserved. Built with love for Indian Heritage.
+                    © 2024 Kalakriti. All rights reserved. Built with love for Indian Heritage.
                 </div>
             </div>
         </footer>
