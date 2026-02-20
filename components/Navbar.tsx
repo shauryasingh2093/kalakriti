@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Navbar = () => {
+const navLinks = [
+    { name: 'Marketplace', href: '/marketplace' },
+    { name: 'Community', href: '/community' },
+    { name: 'Workshops', href: '/workshops' },
+];
+
+export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 100);
+            setIsScrolled(window.scrollY > 50);
         };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    const navLinks = [
-        { name: "Marketplace", href: "/marketplace" },
-        { name: "Community", href: "/community" },
-        { name: "Workshops", href: "/workshops" },
-    ];
 
     return (
         <nav
@@ -31,22 +31,22 @@ const Navbar = () => {
                 left: 0,
                 right: 0,
                 zIndex: 1000,
-                padding: isScrolled ? '24px 80px' : '60px 80px',
-                background: isScrolled ? 'rgba(250, 248, 242, 0.98)' : 'transparent',
-                backdropFilter: isScrolled ? 'blur(40px)' : 'none',
-                WebkitBackdropFilter: isScrolled ? 'blur(40px)' : 'none',
-                transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                padding: isScrolled ? '20px 80px' : '40px 80px',
+                background: isScrolled ? 'rgba(250, 248, 242, 0.85)' : 'transparent',
+                backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+                WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'none',
+                transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.03)' : 'none'
+                borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.05)' : 'none'
             }}
         >
             <Link href="/" style={{
-                fontSize: '1.2rem',
+                fontSize: '1.4rem',
                 fontWeight: 700,
                 fontFamily: 'var(--font-playfair)',
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.04em',
                 textDecoration: 'none',
                 color: isScrolled ? 'var(--color-charcoal)' : '#FFFFFF',
                 textTransform: 'lowercase',
@@ -56,95 +56,111 @@ const Navbar = () => {
                 kalakriti
             </Link>
 
-            {/* Desktop Nav - Spectral Links */}
+            {/* Desktop Nav - High-End Product Grade */}
             <div style={{ display: 'flex', gap: '48px', alignItems: 'center' }} className="desktop-nav">
                 {navLinks.map((link) => (
                     <Link
                         key={link.name}
                         href={link.href}
-                        className="nav-link-masters"
+                        onMouseEnter={() => setActiveLink(link.name)}
+                        onMouseLeave={() => setActiveLink('')}
                         style={{
-                            fontSize: '0.7rem',
+                            fontSize: '0.75rem',
                             fontWeight: 700,
                             textTransform: 'uppercase',
-                            letterSpacing: '0.2em',
+                            letterSpacing: '0.25em',
                             color: isScrolled ? 'var(--color-charcoal)' : '#FFFFFF',
                             textDecoration: 'none',
                             opacity: isScrolled ? 0.6 : 0.8,
-                            transition: 'var(--transition-premium)',
+                            transition: 'all 0.6s var(--ease-out-expo)',
+                            position: 'relative',
+                            padding: '8px 0'
                         }}
                     >
                         {link.name}
+                        {/* Hover Reveal Underline */}
+                        <motion.div
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: activeLink === link.name ? 1 : 0 }}
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                height: '1.5px',
+                                background: isScrolled ? 'var(--color-terracotta)' : 'white',
+                                originX: 0,
+                                transformOrigin: 'left'
+                            }}
+                        />
                     </Link>
                 ))}
-                <Link href="/auth" style={{
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.2em',
-                    color: 'var(--color-terracotta)',
-                    textDecoration: 'none',
-                    marginLeft: '20px'
-                }}>
-                    Login
+
+                {/* Login Pill Button */}
+                <Link href="/auth" className="btn-terracotta-pill" style={{ marginLeft: '20px' }}>
+                    Join the Collective
                 </Link>
             </div>
 
-            {/* Ghost Mobile Toggle */}
+            {/* Mobile Toggle - Minimalist */}
             <button
-                style={{ background: 'none', border: 'none', color: 'var(--color-charcoal)', cursor: 'pointer', display: 'none', opacity: 0.6 }}
+                onClick={() => setIsOpen(!isOpen)}
+                style={{
+                    display: 'none', // Will be hidden on desktop via CSS
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: isScrolled ? 'var(--color-charcoal)' : '#FFFFFF',
+                    padding: '10px'
+                }}
                 className="mobile-nav-toggle"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-                {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                <div style={{ width: '24px', height: '1.5px', background: 'currentColor', marginBottom: '6px', transition: '0.3s', transform: isOpen ? 'translateY(7.5px) rotate(45deg)' : 'none' }}></div>
+                <div style={{ width: '24px', height: '1.5px', background: 'currentColor', transition: '0.3s', opacity: isOpen ? 0 : 1 }}></div>
+                <div style={{ width: '24px', height: '1.5px', background: 'currentColor', marginTop: '6px', transition: '0.3s', transform: isOpen ? 'translateY(-7.5px) rotate(-45deg)' : 'none' }}></div>
             </button>
 
-            {/* Minimalist Slide Menu */}
+            {/* Mobile Menu Overlay */}
             <AnimatePresence>
-                {isMobileMenuOpen && (
+                {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         style={{
-                            position: 'fixed',
-                            top: '100px',
-                            right: '40px',
-                            background: 'white',
-                            padding: '40px',
-                            borderRadius: '24px',
-                            boxShadow: '0 40px 100px rgba(0,0,0,0.05)',
-                            minWidth: '240px'
+                            position: 'absolute',
+                            top: '100%',
+                            left: 0,
+                            right: 0,
+                            background: '#FAF8F2',
+                            padding: '40px 80px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '30px',
+                            zIndex: 999,
+                            boxShadow: '0 40px 80px rgba(0,0,0,0.1)'
                         }}
                     >
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', textAlign: 'right' }}>
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    href={link.href}
-                                    style={{ fontSize: '0.75rem', fontWeight: 700, textDecoration: 'none', color: 'var(--color-charcoal)', textTransform: 'uppercase', letterSpacing: '0.2em', opacity: 0.6 }}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                >
-                                    {link.name}
-                                </Link>
-                            ))}
-                        </div>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                onClick={() => setIsOpen(false)}
+                                style={{ fontSize: '1.5rem', fontWeight: 400, color: 'var(--color-charcoal)', textDecoration: 'none', fontFamily: 'var(--font-playfair)' }}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
                     </motion.div>
                 )}
             </AnimatePresence>
 
             <style jsx>{`
                 @media (max-width: 1024px) {
-                    .desktop-nav { display: none !important; }
+                    .desktop-nav { display: none; }
                     .mobile-nav-toggle { display: block !important; }
-                }
-                .nav-link-masters:hover {
-                    opacity: 1 !important;
-                    letter-spacing: 0.35em !important;
                 }
             `}</style>
         </nav>
     );
-};
-
-export default Navbar;
+}

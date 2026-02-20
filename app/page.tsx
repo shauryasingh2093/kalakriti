@@ -4,223 +4,223 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 
-const categories = [
-    { name: "Pottery", icon: "🏺", img: "/img/Screenshot 2026-02-03 at 7.06.51 PM 1.png" },
-    { name: "Textiles", icon: "🧶", img: "/img/Screenshot 2026-02-03 at 7.07.15 PM 1.png" },
-    { name: "Metalwork", icon: "🔨", img: "/img/Screenshot 2026-02-03 at 7.40.01 PM 1.png" },
-    { name: "Woodwork", icon: "🪚", img: "/img/Screenshot 2026-02-03 at 7.44.05 PM 1.png" },
-    { name: "Jewelry", icon: "💍", img: "/img/Screenshot 2026-02-03 at 7.46.50 PM 1.png" },
-    { name: "Stone", icon: "🗿", img: "/img/Screenshot 2026-02-03 at 6.30.42 PM 1-1.png" },
+const artisans = [
+    { id: 1, name: "Ram Narayan", craft: "Blue Pottery", img: "/img/1.png", region: "Jaipur", rating: 4.9 },
+    { id: 2, name: "Savitri Devi", craft: "Silk Weaving", img: "/img/2.png", region: "Banaras", rating: 5.0 },
+    { id: 3, name: "Suresh Kumar", craft: "Wood Carving", img: "/img/3.png", region: "Sahandan", rating: 4.8 },
 ];
 
-const artisans = [
-    { id: 1, name: "Ram Narayan", craft: "Blue Pottery", img: "/img/Screenshot 2026-02-03 at 7.06.27 PM 1.png" },
-    { id: 2, name: "Savitri Devi", craft: "Silk Weaving", img: "/img/ana-vicente-5xxwRZTVBt4-unsplash 1.png" },
-    { id: 3, name: "Suresh Kumar", craft: "Wood Carving", img: "/img/earl-wilcox-iUbsw_VOkbM-unsplash 1.png" },
+const communityImages = [
+    "/img/1.png", "/img/2.png", "/img/3.png", "/img/4.png",
+    "/img/1.png", "/img/2.png", "/img/3.png", "/img/4.png"
+];
+
+const categories = [
+    { name: "Pottery", img: "/img/1.png" },
+    { name: "Textiles", img: "/img/2.png" },
+    { name: "Metalwork", img: "/img/3.png" },
+    { name: "Woodwork", img: "/img/4.png" },
+    { name: "Jewelry", img: "/img/3.png" },
+    { name: "Stone", img: "/img/4.png" },
 ];
 
 export default function Home() {
     const heroRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-    // Parallax & Cinematic Transforms
-    const heroY = useTransform(scrollYProgress, [0, 1], [0, 300]);
-    const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-    const textY = useTransform(scrollYProgress, [0, 1], [0, -100]);
-    const stripY1 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-    const stripY2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-    const stripY3 = useTransform(scrollYProgress, [0, 1], [0, -250]);
+    const textFade = useTransform(smoothProgress, [0, 0.4], [1, 0]);
+    const textScale = useTransform(smoothProgress, [0, 0.4], [1, 0.9]);
+
+    const panels = [
+        { img: "/img/4.png", pos: "center" },      // Material
+        { img: "/img/2.png", pos: "center" },      // Making
+        { img: "/img/3.png", pos: "top right" },  // Detail
+        { img: "/img/1.png", pos: "center left" }  // Final / Finish
+    ];
 
     return (
         <main style={{ minHeight: '100vh', overflowX: 'hidden' }}>
             <Navbar />
 
-            {/* Cinematic Cinematic Hero */}
-            <section ref={heroRef} style={{ height: '160vh', position: 'relative', overflow: 'hidden', backgroundColor: '#000' }}>
+            {/* Section 1: Hero Design Mastery */}
+            <section ref={heroRef} className="hero-grid">
+                {panels.map((panel, i) => (
+                    <div key={i} className="hero-panel">
+                        <Image src={panel.img} alt={`Heritage Panel ${i + 1}`} fill style={{ objectFit: 'cover', objectPosition: panel.pos }} priority />
+                    </div>
+                ))}
 
-                {/* Fixed Cinematic Backdrop */}
-                <motion.div
-                    style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', y: heroY, scale: heroScale, zIndex: 0 }}
-                >
-                    <Image
-                        src="/img/hero.png"
-                        alt="Heritage Craft"
-                        fill
-                        style={{ objectFit: 'cover', opacity: 0.6, filter: 'blur(4px) brightness(0.7)' }}
-                        priority
-                    />
-                </motion.div>
-
-                {/* Animated Image Strips - Layered Depth */}
-                <div style={{ position: 'absolute', top: '15%', left: 0, right: 0, height: '70%', display: 'flex', gap: '30px', padding: '0 80px', zIndex: 1 }}>
-                    {[
-                        { img: "/img/annie-spratt-TywjkDHf0Ps-unsplash 1.png", y: stripY1 },
-                        { img: "/img/Screenshot 2026-02-03 at 6.30.42 PM 1.png", y: stripY2 },
-                        { img: "/img/ana-vicente-5xxwRZTVBt4-unsplash 1.png", y: stripY3 },
-                        { img: "/img/earl-wilcox-iUbsw_VOkbM-unsplash 1.png", y: stripY1 },
-                        { img: "/img/Screenshot 2026-02-03 at 7.06.51 PM 1.png", y: stripY2 }
-                    ].map((strip, i) => (
-                        <motion.div
-                            key={i}
-                            style={{
-                                flex: '1',
-                                height: '100%',
-                                position: 'relative',
-                                borderRadius: '40px',
-                                overflow: 'hidden',
-                                y: strip.y,
-                                boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-                                border: '1px solid rgba(255,255,255,0.05)'
-                            }}
-                        >
-                            <Image src={strip.img} alt="Craft Strip" fill style={{ objectFit: 'cover', opacity: 0.9 }} />
-                            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.2))' }}></div>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Floating Words Overlay */}
-                <motion.div
-                    style={{
-                        position: 'fixed',
-                        top: '45vh',
-                        left: 0,
-                        right: 0,
-                        zIndex: 10,
-                        textAlign: 'center',
-                        y: textY
-                    }}
-                >
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 0.8, y: 0 }}
-                        transition={{ duration: 1.5, delay: 0.5 }}
-                    >
-                        <span className="tagline-accent" style={{ color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>Create • Connect • Celebrate</span>
+                <motion.div className="hero-overlay" style={{ opacity: textFade, scale: textScale }}>
+                    <div className="hero-tonal-shield" />
+                    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
+                        <span className="tagline-accent">Create &middot; Connect &middot; Celebrate</span>
                     </motion.div>
 
                     <motion.h1
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-                        className="hero-large"
-                        style={{ color: 'white', textShadow: '0 20px 80px rgba(0,0,0,0.4)', marginTop: '20px' }}
+                        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="hero-large" style={{ marginBottom: '16px', fontWeight: 700 }}
                     >
                         kalakriti
                     </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }} animate={{ opacity: 0.95 }} transition={{ duration: 1.5, delay: 1 }}
+                        style={{ color: '#f5efe8', fontSize: '0.9rem', fontWeight: 400, letterSpacing: '0.1em', fontFamily: 'var(--font-playfair)', fontStyle: 'italic', textShadow: '0 4px 15px rgba(0,0,0,0.6)' }}
+                    >
+                        Discover handcrafted stories from master artisans
+                    </motion.p>
                 </motion.div>
             </section>
 
-            {/* Masters Introduction Section */}
-            <section style={{ position: 'relative', zIndex: 10, backgroundColor: 'var(--bg-off-white)', padding: '240px 0' }}>
+            {/* Section 2: Heritage Discovery Feature */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '160px 0' }}>
                 <div className="container">
-                    <motion.div
-                        initial={{ opacity: 0, y: 60 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.5 }}
-                        style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}
-                    >
-                        <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 400, lineHeight: 1.2 }}>
-                            Bridging the silent gap between <br />
-                            <span style={{ fontFamily: 'var(--font-playfair)', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-terracotta)' }}>heritage mastery</span> and the modern gaze.
-                        </h2>
-                        <div style={{ marginTop: '80px' }}>
-                            <Link href="/marketplace" className="btn-primary">Explore the Marketplace</Link>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '32px' }}>
+                        <motion.div
+                            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }}
+                            style={{ backgroundColor: '#E8E2D1', borderRadius: '48px', padding: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+                        >
+                            <h2 style={{ fontSize: '2.5rem', marginBottom: '24px', maxWidth: '400px', lineHeight: 1.1 }}>Where tradition meets the modern marketplace.</h2>
+                            <p style={{ opacity: 0.7, fontSize: '1.1rem', maxWidth: '400px', lineHeight: 1.6 }}>Connected to over 5,000 verified artisans across the subcontinent, Kalakriti is more than a store—it's a living archive of human skill.</p>
+                        </motion.div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}
+                                style={{ height: '400px', borderRadius: '48px', overflow: 'hidden', position: 'relative' }}
+                            >
+                                <Image src="/img/2.png" alt="Pottery Craft" fill style={{ objectFit: 'cover' }} />
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.2 }}
+                                style={{ backgroundColor: '#3D2B1F', borderRadius: '48px', padding: '40px', color: 'white' }}
+                            >
+                                <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', opacity: 0.5 }}>Featured Story</span>
+                                <h3 style={{ fontSize: '1.8rem', marginTop: '12px' }}>Indigo Blue: The Week's Findings</h3>
+                            </motion.div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* Artisan Spotlight with Organic Asymmetry */}
-            <section className="section-spacer" style={{ backgroundColor: 'white' }}>
+            {/* Section 3: Featured Artisans */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '120px 0' }}>
                 <div className="container">
-                    <header style={{ marginBottom: '160px' }}>
-                        <span className="tagline-accent" style={{ opacity: 0.4 }}>Spotlight 01</span>
-                        <h2 style={{ fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4em', marginTop: '20px' }}>The Legacy Keepers</h2>
+                    <header style={{ marginBottom: '80px', textAlign: 'center' }}>
+                        <span className="tagline-accent" style={{ color: 'var(--color-charcoal)', opacity: 0.4 }}>Curated Selections</span>
+                        <h2 style={{ fontSize: '3rem', marginTop: '16px' }}>Featured Artisans</h2>
                     </header>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '100px 40px', alignItems: 'start' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }}>
                         {artisans.map((artisan, i) => (
                             <motion.div
-                                key={artisan.id}
-                                initial={{ opacity: 0, y: 80 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 1.2, delay: i * 0.2 }}
-                                style={{
-                                    marginTop: i === 1 ? '200px' : i === 2 ? '100px' : '0',
-                                }}
+                                key={artisan.id} initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: i * 0.1 }}
+                                className="pill-card" style={{ height: 'auto', padding: '16px', borderRadius: '32px' }}
                             >
-                                <Link href={`/artisan/${artisan.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <div className="pill-card" style={{ height: '600px', borderRadius: '40px' }}>
-                                        <Image src={artisan.img} alt={artisan.name} fill style={{ objectFit: 'cover' }} />
-                                    </div>
-                                    <div style={{ marginTop: '40px', textAlign: 'center' }}>
-                                        <p style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.3em', opacity: 0.5 }}>{artisan.craft}</p>
-                                        <h3 style={{ fontSize: '1.6rem', marginTop: '12px', fontWeight: 400 }}>{artisan.name}</h3>
-                                    </div>
-                                </Link>
+                                <div style={{ position: 'relative', height: '350px', borderRadius: '24px', overflow: 'hidden', marginBottom: '24px' }}>
+                                    <Image src={artisan.img} alt={artisan.name} fill style={{ objectFit: 'cover' }} />
+                                    <div style={{ position: 'absolute', top: '16px', right: '16px', background: 'white', borderRadius: '100px', padding: '6px 12px', fontSize: '0.6rem', fontWeight: 800 }}>VERIFIED</div>
+                                </div>
+                                <div style={{ padding: '0 8px 16px' }}>
+                                    <h3 style={{ fontSize: '1.4rem', fontWeight: 600 }}>{artisan.name}</h3>
+                                    <p style={{ opacity: 0.5, fontSize: '0.85rem' }}>{artisan.craft} &bull; {artisan.region}</p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Minimalist Visual Marquee */}
-            <div className="marquee-container" style={{
-                padding: '40px 0',
-                backgroundColor: 'transparent',
-                borderTop: '1px solid rgba(0,0,0,0.03)',
-                borderBottom: '1px solid rgba(0,0,0,0.03)',
-                color: 'rgba(0,0,0,0.15)',
-                fontSize: '0.9rem',
-                letterSpacing: '0.5em',
-                textTransform: 'uppercase'
-            }}>
-                <div className="marquee-content" style={{ animationDuration: '80s' }}>
-                    Authentic • Verified • Direct • Traditional • Sustainable • Authentic • Verified • Direct • Traditional • Sustainable •Authentic • Verified • Direct • Traditional • Sustainable •
+            {/* Section 4: Running Banner */}
+            <section className="marquee-container">
+                <div className="marquee-content">
+                    {[...Array(6)].map((_, i) => (
+                        <span key={i} className="running-text-item">Handmade &middot; Verified Artisan &middot; Cultural Craft &middot; </span>
+                    ))}
                 </div>
-            </div>
+            </section>
 
-            {/* Discovery Category Grid */}
-            <section className="section-spacer">
+            {/* Section 5: Shop by Matter (Categories) */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '120px 0' }}>
                 <div className="container">
-                    <header style={{ marginBottom: '100px', textAlign: 'center' }}>
-                        <h2 style={{ fontSize: '2.5rem', fontWeight: 300 }}>Search by <span style={{ fontFamily: 'var(--font-playfair)', fontStyle: 'italic' }}>Matter</span></h2>
+                    <header style={{ marginBottom: '80px' }}>
+                        <h2 style={{ fontSize: '2.5rem' }}>Explore Categories</h2>
                     </header>
-                    <div style={{ display: 'flex', gap: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', flexWrap: 'wrap' }}>
                         {categories.map((cat, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                whileHover={{ y: -10 }}
-                                transition={{ delay: i * 0.05 }}
-                                style={{
-                                    width: '180px',
-                                    textAlign: 'center',
-                                    marginTop: i % 2 !== 0 ? '80px' : '0'
-                                }}
-                            >
-                                <div style={{
-                                    aspectRatio: '1/1.8',
-                                    borderRadius: '100px',
-                                    overflow: 'hidden',
-                                    position: 'relative',
-                                    marginBottom: '30px',
-                                    backgroundColor: 'var(--color-sand)',
-                                    transition: 'var(--transition-premium)',
-                                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
-                                }}>
-                                    <Image src={cat.img} alt={cat.name} fill style={{ objectFit: 'cover', filter: 'grayscale(1) opacity(0.6)' }} />
-                                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', opacity: 0.3 }}>{cat.icon}</div>
+                            <motion.div key={i} whileHover={{ scale: 1.05 }} transition={{ duration: 0.4 }} style={{ textAlign: 'center', cursor: 'pointer' }}>
+                                <div style={{ width: '160px', height: '160px', borderRadius: '50%', overflow: 'hidden', marginBottom: '20px', position: 'relative', border: '1px solid rgba(0,0,0,0.05)' }}>
+                                    <Image src={cat.img} alt={cat.name} fill style={{ objectFit: 'cover', filter: 'grayscale(1)' }} />
                                 </div>
-                                <span style={{ fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.4em', opacity: 0.4 }}>{cat.name}</span>
+                                <span style={{ fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{cat.name}</span>
                             </motion.div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Section 6: Community Showcase */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '120px 0' }}>
+                <div className="container">
+                    <header style={{ marginBottom: '60px' }}>
+                        <h2 style={{ fontSize: '2.5rem' }}>Community Showcase</h2>
+                    </header>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gridAutoRows: '250px', gap: '20px' }}>
+                        {communityImages.map((img, i) => (
+                            <motion.div
+                                key={i} whileHover={{ scale: 0.98 }} transition={{ duration: 0.6 }}
+                                style={{
+                                    gridRow: i === 0 ? 'span 2' : i === 5 ? 'span 2' : 'span 1',
+                                    borderRadius: '24px', overflow: 'hidden', position: 'relative'
+                                }}
+                            >
+                                <Image src={img} alt="Community" fill style={{ objectFit: 'cover' }} />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Section 7: Upcoming Workshops */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '120px 0' }}>
+                <div className="container">
+                    <header style={{ marginBottom: '60px' }}>
+                        <h2 style={{ fontSize: '2.5rem' }}>Upcoming Workshops</h2>
+                    </header>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px' }}>
+                        {[1, 2].map((_, i) => (
+                            <div key={i} style={{ backgroundColor: 'white', borderRadius: '32px', padding: '24px', display: 'flex', gap: '24px' }}>
+                                <div style={{ width: '200px', height: '150px', borderRadius: '20px', overflow: 'hidden', position: 'relative' }}>
+                                    <Image src={`/img/${i + 1}.png`} alt="Workshop" fill style={{ objectFit: 'cover' }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                    <span style={{ fontSize: '0.7rem', opacity: 0.5, textTransform: 'uppercase' }}>Aug 12 - 14</span>
+                                    <h3 style={{ fontSize: '1.4rem', margin: '8px 0' }}>Blue Pottery Masterclass</h3>
+                                    <Link href="/workshops" className="btn-primary" style={{ padding: '8px 24px', fontSize: '0.7rem', width: 'fit-content' }}>Join Now</Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Section 8: Join Our Artisan Community */}
+            <section style={{ backgroundColor: '#F5F0E6', padding: '120px 0 200px' }}>
+                <div className="container">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+                        style={{ backgroundColor: '#6B705C', borderRadius: '48px', padding: '100px', textAlign: 'center', color: 'white', position: 'relative', overflow: 'hidden' }}
+                    >
+                        <h2 style={{ fontSize: '4rem', color: 'white', marginBottom: '40px' }}>Join Our Artisan Community</h2>
+                        <Link href="/auth/register" className="btn-primary" style={{ backgroundColor: '#C26A4A', padding: '20px 60px' }}>Join Collective</Link>
+                        <div style={{ position: 'absolute', bottom: '0', left: '0', opacity: 0.1, width: '300px', height: '200px' }}>
+                            <Image src="/img/Screenshot 2026-02-03 at 7.06.27 PM 1.png" alt="Pattern" fill style={{ objectFit: 'cover' }} />
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 

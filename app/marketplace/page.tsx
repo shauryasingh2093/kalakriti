@@ -125,14 +125,24 @@ export default function Marketplace() {
                                 {filteredProducts.map((product, idx) => (
                                     <motion.div
                                         key={product.id}
-                                        initial={{ opacity: 0, y: 30 }}
+                                        initial={{ opacity: 0, y: 40 }}
                                         whileInView={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: idx * 0.05, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                                        style={{ aspectRatio: '1/1.6' }}
+                                        transition={{ delay: idx * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                                        style={{
+                                            aspectRatio: '1/1.6',
+                                            marginTop: idx % 2 !== 0 ? '120px' : '0' // Editorial Rhythmic Asymmetry
+                                        }}
+                                        className="pill-card"
                                     >
-                                        <div style={{ position: 'relative', height: '100%', width: '100%', borderRadius: '40px', overflow: 'hidden', backgroundColor: '#f5f5f5' }}>
+                                        <div style={{ position: 'relative', height: '100%', width: '100%', backgroundColor: '#f5f5f5' }}>
                                             <Image src={product.img} alt={product.name} fill style={{ objectFit: 'cover' }} />
-                                            <div style={{ position: 'absolute', top: '30px', left: '30px', padding: '10px 20px', background: 'rgba(255,255,255,0.95)', borderRadius: '100px', fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
+                                            {/* Heritage Status Badge */}
+                                            <div style={{ position: 'absolute', top: '24px', left: '24px', display: 'flex', gap: '8px' }}>
+                                                <div style={{ padding: '6px 14px', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(4px)', borderRadius: '100px', fontSize: '0.55rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-charcoal)' }}>
+                                                    Verified Heritage
+                                                </div>
+                                            </div>
+                                            <div style={{ position: 'absolute', top: '24px', right: '24px', padding: '10px 20px', background: 'rgba(255,255,255,0.95)', borderRadius: '100px', fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.15em', opacity: 0.8 }}>
                                                 {product.region}
                                             </div>
                                         </div>

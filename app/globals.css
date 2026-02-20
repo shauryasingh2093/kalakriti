@@ -1,9 +1,9 @@
 :root {
   /* Frame 1: Moodboard Specs */
-  --color-olive: #6B7428;
-  --bg-off-white: #FAF8F2;
+  --color-olive: #6B705C;
+  --bg-off-white: #F5F0E6;
   --color-terracotta: #C26A4A;
-  --color-charcoal: #2E2E2E;
+  --color-charcoal: #1C1917;
   --color-sand: #E8E2D1;
   --color-white: #FFFFFF;
 
@@ -57,32 +57,41 @@ h4 {
   font-family: var(--font-playfair);
   font-weight: 700;
   color: var(--color-charcoal);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.04em;
+  /* Optimized negative spacing */
+  -webkit-font-smoothing: antialiased;
 }
 
 .hero-large {
-  font-size: clamp(6rem, 22vw, 18rem);
-  text-transform: lowercase;
-  line-height: 0.7;
-  letter-spacing: -0.04em;
-  color: var(--color-white);
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  opacity: 1;
-  margin: 0;
+  font-size: clamp(64px, 12vw, 160px);
+  font-family: var(--font-playfair);
   font-weight: 700;
+  /* Increased weight for premium feel */
+  letter-spacing: -2px;
+  color: #f5efe8;
+  line-height: 0.9;
   text-align: center;
   pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+  text-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    0 30px 60px rgba(0, 0, 0, 0.5);
+  /* Master Layered Shadows */
 }
 
 .tagline-accent {
-  font-size: 0.9rem;
-  letter-spacing: 0.2em;
-  font-family: var(--font-playfair);
-  color: var(--color-white);
+  font-size: 10px;
+  letter-spacing: 0.8em;
+  margin-bottom: 32px;
   opacity: 0.8;
-  font-weight: 500;
+  /* Increased from 0.6 for better definition */
+  font-family: var(--font-playfair);
+  color: #f5efe8;
+  font-weight: 600;
   display: block;
-  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Glassmorphism & Overlays */
@@ -93,6 +102,59 @@ h4 {
   padding: 60px;
   border-radius: 40px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  /* Material-Aware Join: Subtle 1px accent */
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.hero-panel:last-child {
+  border-right: none;
+}
+
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(46, 42, 38, 0.15), rgba(20, 18, 16, 0.6));
+  pointer-events: none;
+}
+
+.hero-tonal-shield {
+  position: absolute;
+  inset: 0;
+  /* Powerful Material Shield (Charcoal-Umber mix) */
+  background: radial-gradient(circle at center, rgba(12, 10, 8, 0.85) 0%, rgba(12, 10, 8, 0.4) 40%, rgba(12, 10, 8, 0) 80%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Base Layout */
@@ -114,15 +176,39 @@ h4 {
   padding: 16px 40px;
   border: none;
   border-radius: 100px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
   cursor: pointer;
-  transition: var(--transition-premium);
+  transition: transform 0.3s var(--ease-out-expo), background-color 0.3s ease;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-terracotta-pill {
+  padding: 12px 28px;
+  background: #C26A4A;
+  /* Harmonized Terracotta */
+  color: white;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  transition: all 0.6s var(--ease-out-expo);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-terracotta-pill:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
 }
 
 .btn-primary:hover {
@@ -548,41 +634,72 @@ h4 {
   display: none;
 }
 
-.marquee-container {
-  background-color: var(--color-terracotta);
-  color: var(--bg-off-white);
-  padding: 24px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  font-family: var(--font-playfair);
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin: 80px 0;
-}
-
-.marquee-content {
-  display: inline-block;
-  animation: marquee 30s linear infinite;
-}
-
 @keyframes marquee {
   0% {
     transform: translateX(0);
   }
 
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-33.33%);
   }
 }
 
+.marquee-container {
+  background-color: var(--color-terracotta);
+  color: #F5F0E6;
+  padding: 32px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-playfair);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 160px 0;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 40s linear infinite;
+  padding-left: 20px;
+}
+
+.running-text-item {
+  display: inline-block;
+  padding: 0 40px;
+}
+
 .pill-card {
-  border-radius: 40px;
+  border-radius: 24px;
+  /* Balanced radius */
   overflow: hidden;
   background: white;
   aspect-ratio: 1/1.4;
-  box-shadow: var(--shadow-editorial);
-  transition: var(--transition-premium);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  /* Soft ambient shadow */
+  transition: transform 0.8s var(--ease-out-expo), box-shadow 0.8s var(--ease-out-expo);
   border: none;
+  position: relative;
+}
+
+.pill-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 40px 80px rgba(107, 116, 40, 0.08);
+  /* Subtle olive tint glow */
+}
+
+/* Craft Texture Signature */
+.texture-overlay {
+  position: relative;
+}
+
+.texture-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  opacity: 0.01;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .pill-card:hover {
