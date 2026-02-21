@@ -11,7 +11,7 @@ import Link from "next/link";
 const posts = [
     {
         id: 1,
-        artisan: { name: "Ram Narayan", img: "/artisan-featured.png", craft: "Blue Pottery" },
+        artisan: { name: "Ram Narayann", img: "/artisan-featured.png", craft: "Blue Pottery" },
         image: "/trending-craft.png",
         caption: "Witnessing the magic of natural indigo. This glaze will turn into a beautiful deep blue after firing at 800°C. #traditionalart #bluepottery #process",
         likes: 245,
