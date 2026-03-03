@@ -1,4 +1,4 @@
-T🎨 Kalakriti — Digital Platform for Indian Art & Culture
+🎨 Kalakriti — Digital Platform for Indian Art & Culture
 
 Kalakriti is a culturally inspired digital platform designed to celebrate and promote Indian art forms by connecting artists with a wider audience through an intuitive and immersive user experience.
 
